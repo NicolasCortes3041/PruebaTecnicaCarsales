@@ -1,0 +1,14 @@
+# .gitignore
+
+# Backend (.NET)
+BFF/**/bin/
+BFF/**/obj/
+BFF/**/appsettings.Development.json
+
+# Frontend (Angular)
+RickMortyFront/node_modules/
+RickMortyFront/dist/
+
+# General
+*.log
+.env
