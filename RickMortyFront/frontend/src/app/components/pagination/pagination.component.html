@@ -1,0 +1,12 @@
+<div class="center mt-2">
+  <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+    Anterior
+  </button>
+  <span class="text-pagination">Página {{ currentPage }} de {{ totalPages }}</span>
+  <button
+    (click)="goToPage(currentPage + 1)"
+    [disabled]="currentPage === totalPages"
+  >
+    Siguiente
+  </button>
+</div>

@@ -12,3 +12,4 @@ RickMortyFront/dist/
 # General
 *.log
 .env
+.vscode

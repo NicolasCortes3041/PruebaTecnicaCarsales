@@ -1,0 +1,35 @@
+<div class="center">
+  <div class="mb-1 center_text_label">
+    <label for="txtSearch" class="text_search">Buscar por nombre: </label>
+    <input
+      id="txtSearch"
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="filtrarTabla()"
+    />
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Fecha de emisión</th>
+        <th>Episodio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ep of episodes">
+        <td>{{ ep.id }}</td>
+        <td>{{ ep.name }}</td>
+        <td>{{ ep.air_Date | dateFnsFormat }}</td>
+        <td>{{ ep.episode }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<app-pagination
+  [currentPage]="currentPage"
+  [totalPages]="totalPages"
+  (pageChange)="goToPage($event)"
+></app-pagination>
