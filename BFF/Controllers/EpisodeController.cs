@@ -14,21 +14,48 @@ public class EpisodeController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var result = await _episodeService.GetAll();
-        return Ok(result);
+        try
+        {
+            var result = await _episodeService.GetAll();
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return ErrorHandler.Handle(ex);
+        }
     }
 
     [HttpGet("page")]
     public async Task<IActionResult> Get([FromQuery] int page = 1)
     {
-        var result = await _episodeService.GetEpisodes(page);
-        return Ok(result);
+        try
+        {
+            var result = await _episodeService.GetEpisodes(page);
+
+            if (result == null) return NotFound(new { message = "pagina no encontrada" });
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return ErrorHandler.Handle(ex);
+        }
     }
-    
+
     [HttpGet("filter")]
     public async Task<IActionResult> Get([FromQuery] string name, string? episode)
     {
-        var result = await _episodeService.GetFilteredEpisodes(name, episode);
-        return Ok(result);
+        try
+        {
+            var result = await _episodeService.GetFilteredEpisodes(name, episode);
+
+            if (result == null) return NotFound(new { message = "No se ha encontrado el episodio" });
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return ErrorHandler.Handle(ex);
+        }
     }
 }

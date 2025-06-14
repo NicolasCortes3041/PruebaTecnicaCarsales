@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EpisodeResponse } from '../components/episodes/interfaces/espisodeResponse';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,6 @@ export class EpisodeService {
   }
 
   getFilteredEpisode(name: string): Observable<EpisodeResponse> {
-    return this.http.get<EpisodeResponse>(`${this.baseUrl}/filter?name=${name}`);
+    return this.http.get<EpisodeResponse>(`${environment.baseUrl}/filter?name=${name}`);
   }
 }

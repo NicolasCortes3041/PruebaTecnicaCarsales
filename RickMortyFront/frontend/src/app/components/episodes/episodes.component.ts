@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Episode } from './interfaces/episode';
+import Swal from 'sweetalert2';
 
 import { CommonModule } from '@angular/common';
 import { EpisodeService } from '../../service/episode.service';
@@ -19,6 +20,7 @@ export class EpisodesComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   searchText: string = '';
+  aboveSearchText: string = '';
 
   constructor(private episodeService: EpisodeService) {}
 
@@ -27,10 +29,17 @@ export class EpisodesComponent implements OnInit {
   }
 
   loadEpisodesPage(page: number = 1): void {
-    this.episodeService.getEpisodesPagination(page).subscribe((data) => {
-      this.episodes = data.results;
-      this.currentPage = page;
-      this.totalPages = data.info.pages;
+    this.episodeService.getEpisodesPagination(page).subscribe({
+      next: (data) => {
+        this.episodes = data.results;
+        this.currentPage = page;
+        this.totalPages = data.info.pages;
+      },
+      error: (error) => {
+        Swal.fire(error.error.msg, '', 'error');
+        this.episodes = [];
+        this.totalPages = 1;
+      },
     });
   }
 
@@ -38,18 +47,36 @@ export class EpisodesComponent implements OnInit {
     this.loadEpisodesPage(page);
   }
 
-  filtrarTabla(): void {
+  filtrarTabla(event: Event): void {
+    const valorActual = (event.target as HTMLInputElement).value;
     const texto = this.searchText.toLowerCase();
 
+    let deleteText: boolean = false;
+
+    if (valorActual.length < this.aboveSearchText.length) {
+      deleteText = true;
+    } else {
+      deleteText = false;
+    }
+
     if (texto) {
-      this.episodeService.getFilteredEpisode(texto).subscribe((data) => {
-        this.episodes = data.results;
-        this.totalPages = data.info.pages;
+      this.episodeService.getFilteredEpisode(texto).subscribe({
+        next: (data) => {
+          this.episodes = data.results;
+          this.totalPages = data.info.pages;
+        },
+        error: (error) => {
+          if (!deleteText) {
+            Swal.fire(error.error.msg, '', 'error');
+            this.episodes = [];
+            this.totalPages = 1;
+          }
+        },
       });
     } else {
       this.loadEpisodesPage();
     }
-    console.log(this.episodes);
-    console.log(texto);
+
+    this.aboveSearchText = valorActual;
   }
 }

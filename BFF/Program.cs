@@ -18,10 +18,11 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddHttpClient<IEpisodeService, EpisodeService>(client =>
-{
-    client.BaseAddress = new Uri("https://rickandmortyapi.com/api/");
-});
+builder.Services.AddHttpClient<IEpisodeService, EpisodeService>();
+
+builder.Services.Configure<ConfigurationSettings>(
+    builder.Configuration.GetSection("Configuration")
+);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
